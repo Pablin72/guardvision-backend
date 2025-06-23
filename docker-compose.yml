@@ -1,0 +1,49 @@
+services:
+  database-service:
+    restart: always
+    image: postgres:16
+    env_file:
+      - ./database_postgresql/database.env
+    volumes:
+      - guardvision-data:/var/lib/postgresql/data
+      - ./database_postgresql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - 5432:5432
+    networks:
+      - app-tier
+    container_name: database_guardvision
+  backend-service:
+    restart: always
+    env_file:
+      - .env
+    build: ./api
+    volumes:
+      - ./api:/usr/src/app
+    ports:
+      - 5020:5020 #nuestramaquina:contenedor
+    networks:
+      - app-tier
+    container_name: service_guardvision
+    environment:
+      SECRET_KEY: ${SECRET_KEY}
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
+      BOT_USERNAME: ${BOT_USERNAME}
+      AZURE_STORAGE_CONNECTION_STRING: ${AZURE_STORAGE_CONNECTION_STRING}
+      CONTAINER_NAME: ${CONTAINER_NAME}
+      #### Service Principal ####
+      AZURE_CLIENT_ID: ${AZURE_CLIENT_ID}
+      AZURE_TENANT_ID: ${AZURE_TENANT_ID}
+      AZURE_CLIENT_SECRET: ${AZURE_CLIENT_SECRET}
+      AZURE_REDIRECT_URI: ${AZURE_REDIRECT_URI}
+      #### Azure Key Vault ####
+      AZURE_KEY_VAULT_URL: ${AZURE_KEY_VAULT_URL}
+
+      DATABASE_URL: ${DATABASE_URL}
+
+
+networks:
+  app-tier:
+    driver: bridge
+
+volumes:
+  guardvision-data:
