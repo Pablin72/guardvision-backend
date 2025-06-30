@@ -4,7 +4,6 @@ from dotenv import load_dotenv
 import logging
 import datetime
 
-from app.login.utils.key_vault import create_secret
 
 
 load_dotenv()
