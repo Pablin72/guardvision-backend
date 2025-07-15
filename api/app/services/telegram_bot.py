@@ -25,8 +25,6 @@ TELEGRAM_BOT_TOKEN=os.getenv('TELEGRAM_BOT_TOKEN')
 
 BOT_USERNAME = os.getenv('BOT_USERNAME')
 
-CHAT_ID = "1170100910"
-
 application = Application.builder().token(TELEGRAM_BOT_TOKEN).build()
 
 async def start(update, context: ContextTypes.DEFAULT_TYPE):

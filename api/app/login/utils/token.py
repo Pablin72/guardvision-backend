@@ -26,7 +26,7 @@ def token_required(f):
         # Leer el header de Authorization
         auth_header = request.headers.get('Authorization')
         if not auth_header:
-            return jsonify({'message': 'Token is missing!'}), 401
+            return jsonify({'message': 'No se ha recibido ningún token de autoriación.'}), 401
 
         try:
             # Eliminar el prefijo "Bearer" si está presente
